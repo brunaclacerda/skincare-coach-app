@@ -18,7 +18,7 @@ export default function NewUserModal() {
   const { setUserSurvey } = useSession();
 
   useEffect(() => {
-    if (skinAnalyses && skinAnalyses.length) {
+    if (skinAnalyses && skinAnalyses.length && !isClosed) {
       return setShowAnalysesModal(true);
     }
     if (isClosed) {

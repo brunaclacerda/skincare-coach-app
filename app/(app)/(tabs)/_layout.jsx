@@ -9,11 +9,11 @@ import { useSession } from "../../../ctx";
 export default function TabLayout() {
   console.log("TabLayout");
   const { user } = useSession();
-  // JUST FOR TESTING
-  // if (user.isNew) {
-  //   console.log(user);
-  //   return <Redirect href="/modal" />;
-  // }
+
+  if (user.isNew) {
+    console.log(user);
+    return <Redirect href="/modal" />;
+  }
   return (
     <Tabs
       screenOptions={{
@@ -34,7 +34,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="mySkin"
+        name="skin"
         options={{
           title: "My Skin",
           tabBarIcon: ({ color, focused }) => (
