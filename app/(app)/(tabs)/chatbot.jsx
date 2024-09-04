@@ -14,14 +14,66 @@ import {
   View,
   Text,
   useSafeArea,
+  Modal,
 } from "native-base";
+
+import { Link } from "expo-router";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
-// , Entypo
+
+// function NewChatModal(showModal, setShowModal) {
+//   console.log("newChatModal");
+
+//   return (
+//     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+//       <Modal.Content>
+//         <Modal.Header>
+//           {/* <HStack> */}
+//           <Heading w="85%" md="20px" mb="20px" margin="8px"></Heading>
+//           {/* <Button variant="unstyled">
+//               <Text fontSize="2xs">Skip</Text>
+//             </Button> */}
+//           {/* </HStack> */}
+//         </Modal.Header>
+
+//         <Modal.Body flex="1" w="100%">
+//           {/* <ScrollView> */}
+//           <Box
+//             alignItems="center"
+//             display="flex"
+//             flexDirection="column"
+//             flex="1"
+//             gap="4"
+//             pb="5"
+//             pt="7"
+//           >
+//             <VStack space={3}>
+//               <Heading textAlign="center" size="md"></Heading>
+//               <Text textAlign="center" size="md">
+//                 aaaaaasdfsadfasjkhfskjdhfsjkdhjbfkdjfhsldfsd
+//               </Text>
+//             </VStack>
+//           </Box>
+//           {/* </ScrollView> */}
+//         </Modal.Body>
+
+//         <Modal.Footer borderTopWidth="0">
+//           <Button
+//             onPress={() => {
+//               setShowModal(!showModal);
+//             }}
+//           >
+//             Open Modal
+//           </Button>
+//         </Modal.Footer>
+//       </Modal.Content>
+//     </Modal>
+//   );
+// }
 
 export default function ChatbotTab() {
   const safeAreaProps = useSafeArea({
@@ -29,86 +81,83 @@ export default function ChatbotTab() {
     pt: 4,
   });
 
-  // return (
-  //   <View>
-  //     <VStack>
-  //       <Heading>Chat</Heading>
-  //       <Button leftIcon={<AddIcon />} variant="outline">
-  //         <Text>Start a new chat</Text>
-  //       </Button>
-  //     </VStack>
-  //   </View>
-  // );
-
-  const [mode, setMode] = useState("Basic");
   return (
-    <View style={styles.container} {...safeAreaProps}>
-      <Box
-        _dark={{
-          bg: "coolGray.800",
-        }}
-        _light={{
-          bg: "white",
-        }}
-        flex="1"
-        w="100%"
-      >
-        <Heading p="4" pb="3" size="lg">
-          Inbox
-        </Heading>
-        <ScrollView
+    <>
+      <View style={styles.container} {...safeAreaProps}>
+        <Box
+          _dark={{
+            bg: "coolGray.800",
+          }}
+          _light={{
+            bg: "white",
+          }}
+          flex="1"
+          w="100%"
+        >
+          <Center>
+            <VStack alignItems="center">
+              <Heading p="4" pb="3" size="lg">
+                Chat
+              </Heading>
+              <Button leftIcon={<AddIcon />} variant="outline">
+                <Link href="/chatmodal"> Start a new chat</Link>
+              </Button>
+            </VStack>
+          </Center>
+          {/* <ScrollView
           contentContainerStyle={{ width: "100%" }}
           showsVerticalScrollIndicator={false}
-        >
+        > */}
           <Basic />
-        </ScrollView>
-      </Box>
-    </View>
+          {/* </ScrollView> */}
+        </Box>
+      </View>
+    </>
   );
 }
 
-function Basic() {
-  const data = [
+function getData() {
+  return [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
       fullName: "Afreen Khan",
       timeStamp: "12:47 PM",
       recentText: "Good Day!",
-      avatarUrl:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      avatarUrl: "",
     },
     {
       id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
       fullName: "Sujita Mathur",
       timeStamp: "11:11 PM",
       recentText: "Cheer up, there!",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
+      avatarUrl: "",
     },
     {
       id: "58694a0f-3da1-471f-bd96-145571e29d72",
       fullName: "Anci Barroco",
       timeStamp: "6:22 PM",
       recentText: "Good Day!",
-      avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
+      avatarUrl: "",
     },
     {
       id: "68694a0f-3da1-431f-bd56-142371e29d72",
       fullName: "Aniket Kumar",
       timeStamp: "8:56 PM",
       recentText: "All the best",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU",
+      avatarUrl: "",
     },
     {
       id: "28694a0f-3da1-471f-bd96-142456e29d72",
       fullName: "Kiara",
       timeStamp: "12:47 PM",
       recentText: "I will call today.",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU",
+      avatarUrl: "",
     },
   ];
+}
+
+function Basic() {
+  const data = getData();
   const [listData, setListData] = useState(data);
 
   const closeRow = (rowMap, rowKey) => {
@@ -142,12 +191,12 @@ function Basic() {
       >
         <Box pl="4" pr="5" py="2">
           <HStack alignItems="center" space={3}>
-            <Avatar
+            {/* <Avatar
               size="48px"
               source={{
                 uri: item.avatarUrl,
               }}
-            />
+            /> */}
             <VStack>
               <Text
                 color="coolGray.800"
@@ -248,8 +297,6 @@ function Basic() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     w: "100%",
   },
 });

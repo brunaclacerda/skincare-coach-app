@@ -45,6 +45,13 @@ export default function AppLayout() {
             presentation: "modal",
           }}
         />
+        <Stack.Screen
+          name="chatmodal"
+          options={{
+            presentation: "modal",
+            headerShown: false,
+          }}
+        />
         {/* <Stack.Screen name="+not-found" /> */}
       </Stack>
     </ThemeProvider>
