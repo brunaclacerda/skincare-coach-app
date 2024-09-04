@@ -1,31 +1,24 @@
-import { NativeBaseProvider } from 'native-base';
-import { useFonts } from 'expo-font';
-import { Slot } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-import { SessionProvider } from '../ctx';
+import { NativeBaseProvider } from "native-base";
+import { useFonts } from "expo-font";
+import { Slot } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import "react-native-reanimated";
+import { LogBox } from "react-native";
+import { SessionProvider } from "../ctx";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-// async function save(key, value) {
-//   await SecureStore.setItemAsync(key, value);
-// }
+// Ignore log notification by message
+LogBox.ignoreLogs(["Warning: ..."]);
 
-// async function getValueFor(key) {
-//   let result = await SecureStore.getItemAsync(key);
-//   if (result) {
-//     alert("🔐 Here's your value 🔐 \n" + result);
-//   } else {
-//     alert('No values stored under that key.');
-//   }
-// }
+//Ignore all log notifications
+LogBox.ignoreAllLogs();
 
 export default function RootLayout() {
-  
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -34,18 +27,14 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  
   if (!loaded) {
     return null;
   }
   return (
-
     <SessionProvider>
-
       <NativeBaseProvider>
         <Slot />
       </NativeBaseProvider>
-      
     </SessionProvider>
   );
 }

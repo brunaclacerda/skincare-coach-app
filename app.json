@@ -12,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brunaclacerda.skincarecoachapp"
@@ -31,7 +32,6 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-
       [
         "expo-dev-launcher",
         {
@@ -41,6 +41,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d83d0161-4b58-4419-bfde-4a99eb297dca"
+      }
     }
   }
 }
