@@ -37,7 +37,6 @@ export function SessionProvider({ children }) {
                 password: password,
               }),
             });
-
             const data = await response.json();
 
             if (response.ok) {
@@ -48,11 +47,9 @@ export function SessionProvider({ children }) {
 
               return;
             }
-            console.log(data);
 
             if (!response.ok) throw new Error(data.failureMsg);
           } catch (error) {
-            // console.log(error)
             return { failure: true, message: error };
           }
         },

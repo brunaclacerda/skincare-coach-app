@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { LogBox } from "react-native";
 import { SessionProvider } from "../ctx";
+import { ChatProvider } from "../components/ChatContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -32,9 +33,11 @@ export default function RootLayout() {
   }
   return (
     <SessionProvider>
-      <NativeBaseProvider>
-        <Slot />
-      </NativeBaseProvider>
+      <ChatProvider>
+        <NativeBaseProvider>
+          <Slot />
+        </NativeBaseProvider>
+      </ChatProvider>
     </SessionProvider>
   );
 }

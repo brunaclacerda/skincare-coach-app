@@ -6,80 +6,34 @@ import {
   Pressable,
   Box,
   HStack,
-  Avatar,
   Spacer,
   Icon,
   Center,
-  ScrollView,
   View,
   Text,
   useSafeArea,
-  Modal,
 } from "native-base";
 
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
+import dateFormat from "dateformat";
 
-// function NewChatModal(showModal, setShowModal) {
-//   console.log("newChatModal");
-
-//   return (
-//     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-//       <Modal.Content>
-//         <Modal.Header>
-//           {/* <HStack> */}
-//           <Heading w="85%" md="20px" mb="20px" margin="8px"></Heading>
-//           {/* <Button variant="unstyled">
-//               <Text fontSize="2xs">Skip</Text>
-//             </Button> */}
-//           {/* </HStack> */}
-//         </Modal.Header>
-
-//         <Modal.Body flex="1" w="100%">
-//           {/* <ScrollView> */}
-//           <Box
-//             alignItems="center"
-//             display="flex"
-//             flexDirection="column"
-//             flex="1"
-//             gap="4"
-//             pb="5"
-//             pt="7"
-//           >
-//             <VStack space={3}>
-//               <Heading textAlign="center" size="md"></Heading>
-//               <Text textAlign="center" size="md">
-//                 aaaaaasdfsadfasjkhfskjdhfsjkdhjbfkdjfhsldfsd
-//               </Text>
-//             </VStack>
-//           </Box>
-//           {/* </ScrollView> */}
-//         </Modal.Body>
-
-//         <Modal.Footer borderTopWidth="0">
-//           <Button
-//             onPress={() => {
-//               setShowModal(!showModal);
-//             }}
-//           >
-//             Open Modal
-//           </Button>
-//         </Modal.Footer>
-//       </Modal.Content>
-//     </Modal>
-//   );
-// }
+import { getChats } from "../../../api/chatbot.js";
+import { useChatContext } from "../../../components/ChatContext";
 
 export default function ChatbotTab() {
   const safeAreaProps = useSafeArea({
     safeAreaTop: true,
     pt: 4,
   });
+  const chatContext = useChatContext();
+
+  const router = useRouter();
 
   return (
     <>
@@ -99,66 +53,50 @@ export default function ChatbotTab() {
               <Heading p="4" pb="3" size="lg">
                 Chat
               </Heading>
-              <Button leftIcon={<AddIcon />} variant="outline">
-                <Link href="/chatmodal"> Start a new chat</Link>
+              <Button
+                leftIcon={<AddIcon />}
+                variant="outline"
+                onPress={() => {
+                  chatContext.selectChat(null);
+                  router.replace("/chatmodal");
+                }}
+              >
+                {/* <Link href="/chatmodal"> Start a new chat</Link> */}
+                <Text>Start a new chat</Text>
               </Button>
             </VStack>
           </Center>
-          {/* <ScrollView
-          contentContainerStyle={{ width: "100%" }}
-          showsVerticalScrollIndicator={false}
-        > */}
-          <Basic />
-          {/* </ScrollView> */}
+          <Basic chatContext={chatContext} />
         </Box>
       </View>
     </>
   );
 }
 
-function getData() {
-  return [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      fullName: "Afreen Khan",
-      timeStamp: "12:47 PM",
-      recentText: "Good Day!",
-      avatarUrl: "",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      fullName: "Sujita Mathur",
-      timeStamp: "11:11 PM",
-      recentText: "Cheer up, there!",
-      avatarUrl: "",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      fullName: "Anci Barroco",
-      timeStamp: "6:22 PM",
-      recentText: "Good Day!",
-      avatarUrl: "",
-    },
-    {
-      id: "68694a0f-3da1-431f-bd56-142371e29d72",
-      fullName: "Aniket Kumar",
-      timeStamp: "8:56 PM",
-      recentText: "All the best",
-      avatarUrl: "",
-    },
-    {
-      id: "28694a0f-3da1-471f-bd96-142456e29d72",
-      fullName: "Kiara",
-      timeStamp: "12:47 PM",
-      recentText: "I will call today.",
-      avatarUrl: "",
-    },
-  ];
+async function getData() {
+  const chats = await getChats();
+  const list = chats.map((chat) => {
+    const lastMsgIdx = chat.message.length - 1;
+    chat.recentText = chat.message[lastMsgIdx]?.content?.substr(0, 20) || "";
+    chat.date = dateFormat(chat.createdAt, "paddedShortDate");
+    return chat;
+  });
+  return list;
 }
 
-function Basic() {
-  const data = getData();
-  const [listData, setListData] = useState(data);
+function Basic({ chatContext }) {
+  const [listData, setListData] = useState();
+  const router = useRouter();
+
+  useEffect(() => {
+    getData()
+      .then((data) => {
+        setListData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -181,7 +119,12 @@ function Basic() {
   const renderItem = ({ item, index }) => (
     <Box>
       <Pressable
-        onPress={() => console.log("You touched me")}
+        onPress={() => {
+          chatContext.selectChat(item);
+          router.replace({
+            pathname: "/chatmodal",
+          });
+        }}
         _dark={{
           bg: "coolGray.800",
         }}
@@ -205,7 +148,7 @@ function Basic() {
                 }}
                 bold
               >
-                {item.fullName}
+                {item.title}
               </Text>
               <Text
                 color="coolGray.600"
@@ -225,7 +168,7 @@ function Basic() {
               }}
               alignSelf="flex-start"
             >
-              {item.timeStamp}
+              {item.date}
             </Text>
           </HStack>
         </Box>
@@ -288,7 +231,7 @@ function Basic() {
         previewOpenValue={-40}
         previewOpenDelay={3000}
         onRowDidOpen={onRowDidOpen}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
     </Box>
   );
