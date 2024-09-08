@@ -10,12 +10,11 @@ import {
   Center,
 } from "native-base";
 
-import { Link } from "expo-router";
-
 import FullScreenModal from "./FullScreenModal";
 import { useState, useEffect, createContext, useContext } from "react";
 
 import { getApi } from "../api/survey";
+import { userSurvey } from "../api/user";
 
 const SurveyContext = createContext();
 const SectionContext = createContext({
@@ -232,28 +231,11 @@ function Footer() {
     console.log(survey);
 
     try {
-      const response = await fetch("http://10.0.2.2:3000/user/survey", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          section: survey,
-        }),
-      });
-
-      const data = await response.json();
-      console.log("response     ", data);
-      if (!response.ok) {
-        if (data.failureMsg) throw new Error(data.failureMsg);
-        throw new Error("Error not identified.");
-      }
+      const data = await userSurvey(survey);
       setShowSurveyModal(false);
       setSkinAnalyses([data.skinAnalysis, ...data.concernAnalysis]);
     } catch (error) {
-      // throw new Error({ failure: true, message: error})
-      alert(error);
+      alert(error.message);
     }
   };
 
