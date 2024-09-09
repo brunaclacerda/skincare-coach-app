@@ -10,6 +10,8 @@ import {
   Center,
   Image,
   VStack,
+  TextArea,
+  Container,
 } from "native-base";
 
 import FullScreenModal from "./FullScreenModal";
@@ -27,17 +29,17 @@ function Footer() {
   };
 
   const nextOnPress = () => {
-    setIndex(index++);
+    setIndex(index + 1);
   };
 
   const backOnPress = () => {
-    setIndex(index--);
+    setIndex(index - 1);
   };
 
   return (
     <Center flex={1}>
       <Button.Group space="30px">
-        {!isDone && index > 0 && (
+        {index > 0 && (
           <Button minW="80px" onPress={backOnPress}>
             Back
           </Button>
@@ -69,11 +71,13 @@ export default function ModalAnalyses({
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    console.log("UseEffect skin ", index, skinAnalyses);
-    if (skinAnalyses && index < skinAnalyses.length)
-      return setPageData(skinAnalyses[index]);
-    setIsDone(true);
-  }, [index, skinAnalyses]);
+    console.log("UseEffect skin ", index, skinAnalyses.length);
+    if (showAnalysesModal) {
+      setIsDone(index == skinAnalyses.length - 1 ? true : false);
+      if (index < skinAnalyses.length) return setPageData(skinAnalyses[index]);
+      setIsDone(true);
+    }
+  }, [index, showAnalysesModal]);
 
   return (
     <FullScreenModal
@@ -108,22 +112,23 @@ export default function ModalAnalyses({
               </Button>
             </HStack>
             <Box w="100%">
-              <Progress size="xs" value={45} />
+              <Progress
+                size="xs"
+                value={((index + 1) * 100) / skinAnalyses.length}
+              />
             </Box>
           </Modal.Header>
 
           <Modal.Body flex="1" w="100%">
             <ScrollView>
-              <Box
-                alignItems="center"
-                display="flex"
-                flexDirection="column"
-                flex="1"
-                gap="4"
-                pb="5"
-                pt="7"
-              >
-                <VStack space={3}>
+              <Box pb="5" pt="7">
+                <VStack
+                  space={3}
+                  w="100%"
+                  flex="1"
+                  display="flex"
+                  alignItems="center"
+                >
                   <Heading textAlign="center" size="md">
                     {"You have " + pageData.result}
                   </Heading>
@@ -136,9 +141,30 @@ export default function ModalAnalyses({
                       size="xl"
                     />
                   </Center>
-                  <Text textAlign="center" size="md">
-                    {pageData.text}
-                  </Text>
+                  {/* <Box justifyContent="center" boxSize="100%">
+                    <TextArea
+                      isDisabled
+                      _disabled={{
+                        _font: {
+                          fontStyle: "normal", // Change font style to normal
+                          fontWeight: "normal", // Optional: You can also set font weight to normal
+                        },
+                      }}
+                      style={{ fontStyle: "normal" }}
+                      textAlign="center"
+                      flexDirection="column"
+                      display="flex"
+                      flex={1}
+                      h={350}
+                    >
+                      {pageData.text}
+                    </TextArea> */}
+                  <Container boxSize="100%">
+                    <Text alignContent="center" textAlign="center" h={350}>
+                      {pageData.text}
+                    </Text>
+                  </Container>
+                  {/* </Box> */}
                 </VStack>
               </Box>
             </ScrollView>

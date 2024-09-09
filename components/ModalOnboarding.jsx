@@ -15,7 +15,10 @@ import {
   Stack,
 } from "native-base";
 import { useState, useContext, createContext } from "react";
+
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { SwipeListView } from "react-native-swipe-list-view";
+import dateFormat from "dateformat";
 
 import FullScreenModal from "./FullScreenModal";
 import { updateApi } from "../api/user";
@@ -37,12 +40,8 @@ function ProfileModal() {
   );
 
   const formatDate = (date) => {
-    // Format date as "day / month / year"
     if (date) {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+      return dateFormat(date, "paddedShortDate");
     }
   };
   const onDateChange = (event, selectedDate) => {
