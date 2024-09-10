@@ -1,8 +1,7 @@
-# Welcome to your Expo app 👋
+# Skincare coach app
+An Expo app that will help create and maintain a skincare routine.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
+## Getting started
 
 1. Install dependencies
 
@@ -23,28 +22,26 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Technologies uses
 
-## Get a fresh project
+React Native - For building mobile apps
+Expo - For developing, building, and deploying the app
+Expo Router - For handling navigation within the app
+Native Base - For building components
 
-When you're ready, run:
+## Contributing
+If you'd like to contribute to this project, please follow these steps:
 
-```bash
-npm run reset-project
-```
+Fork the repository.
+Create a new branch (git checkout -b feature/YourFeature).
+Commit your changes (git commit -m 'Add some feature').
+Push to the branch (git push origin feature/YourFeature).
+Open a Pull Request.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Learn more
+## Contact
+Bruna Silva - brunaclacerda@gmail.com
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Project Link: https://github.com/brunaclacerda/skincare-coach-app
