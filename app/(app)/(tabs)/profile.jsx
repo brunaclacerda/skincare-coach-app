@@ -5,8 +5,7 @@ import { useSession } from "../../../ctx";
 export default function ProfileTab() {
   const { signOut } = useSession();
   return (
-    <View style={styles.container}>
-      <Text>Profile</Text>
+    <View style={styles.container} safeAreaTop>
       <Button onPress={signOut}>Logout</Button>
     </View>
   );

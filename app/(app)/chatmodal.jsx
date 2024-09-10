@@ -17,7 +17,9 @@ import {
   Spinner,
 } from "native-base";
 import { useState, useEffect, useRef } from "react";
-import { Link, useSearchParams } from "expo-router";
+import { Link } from "expo-router";
+
+import Markdown from "react-native-markdown-display";
 
 import { TabBarIcon } from "../../components/navigation/TabBarIconJs";
 import { chatbot } from "../../api/chatbot";
@@ -27,11 +29,6 @@ export default function ChatModal() {
   const WELCOME_MSG = [
     {
       content: "Hi! I’m here to help!?",
-      role: "assistant",
-    },
-    {
-      content:
-        "Would you like to know if the products you wish to use are suitable for your skin?",
       role: "assistant",
     },
   ];
@@ -61,7 +58,7 @@ export default function ChatModal() {
 
   const getStream = async (chunk) => {
     setAnswer((prevAnswer) => {
-      return prevAnswer + " " + chunk;
+      return prevAnswer + chunk;
     });
   };
   const isDone = async (id) => {
@@ -125,7 +122,7 @@ export default function ChatModal() {
             <Heading w="85%">Chatbot</Heading>
             <Button variant="unstyled">
               <Link href="../chatbot">
-                <Text fontSize="2xs">Skip</Text>
+                <Text fontSize="2xs">Close</Text>
               </Link>
             </Button>
           </HStack>
@@ -146,13 +143,14 @@ export default function ChatModal() {
               {messages.map((message) => {
                 return (
                   <Box rounded="xl" {...styles[message.role]} p="3">
-                    <Text>{message.content}</Text>
+                    {/* <Text>{message.content}</Text> */}
+                    <Markdown>{message.content}</Markdown>
                   </Box>
                 );
               })}
               {isLoading && (
-                <Box rounded="xl" p="3">
-                  <Text>{answer}</Text>
+                <Box rounded="xl" p="3" {...styles.assistant}>
+                  <Markdown>{answer}</Markdown>
                 </Box>
               )}
             </VStack>
@@ -226,15 +224,15 @@ const styles = StyleSheet.create({
     border: "4",
   },
   assistant: {
-    marginLeft: "40",
+    marginLeft: "5",
     bg: "gray.300",
   },
   admin: {
-    marginLeft: "40",
+    marginLeft: "5",
     bg: "gray.300",
   },
   user: {
-    marginRight: "40",
+    marginRight: "5",
     bg: "gray.100",
   },
 });

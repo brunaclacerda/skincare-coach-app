@@ -17,7 +17,6 @@ import {
 import { useState, useContext, createContext } from "react";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { SwipeListView } from "react-native-swipe-list-view";
 import dateFormat from "dateformat";
 
 import FullScreenModal from "./FullScreenModal";
@@ -158,7 +157,6 @@ function SubmitButton() {
               .finally(() => {
                 setLoading(false);
               });
-            console.log("Chegou aqui");
           }}
         >
           Next

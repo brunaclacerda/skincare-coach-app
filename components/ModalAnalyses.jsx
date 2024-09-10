@@ -108,7 +108,7 @@ export default function ModalAnalyses({
   useEffect(() => {
     console.log("UseEffect skin ", index, skinAnalyses);
     if (showAnalysesModal && skinAnalyses) {
-      setIsDone(index == skinAnalyses.length - 1 ? true : false);
+      setIsDone(index == skinAnalyses.length ? true : false);
       if (index < skinAnalyses.length) return setPageData(skinAnalyses[index]);
     }
   }, [index, showAnalysesModal]);

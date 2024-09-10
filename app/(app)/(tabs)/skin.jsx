@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 export default function SkinTab() {
   return (
     <View style={styles.container}>
-      <Text>Tab [Home|Settings]</Text>
+      <Text></Text>
     </View>
   );
 }
