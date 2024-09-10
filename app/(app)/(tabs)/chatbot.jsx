@@ -78,7 +78,7 @@ async function getData() {
   const list = chats.map((chat) => {
     const lastMsgIdx = chat.message.length - 1;
     chat.recentText = chat.message[lastMsgIdx]?.content?.substr(0, 20) || "";
-    chat.date = dateFormat(chat.createdAt, "paddedShortDate");
+    chat.date = dateFormat(chat.createdAt, "dd/mm/yyyy");
     return chat;
   });
   return list;

@@ -17,9 +17,9 @@ import ErrorStatus from "../components/ErrorStatus";
 
 export default function SignUp() {
   const { signUp, signIn } = useSession();
-  const [username, setUsername] = useState("bruna@hotmail.com");
-  const [password, setPassword] = useState("Ab12345678910-");
-  const [pwdVal, setPwdVal] = useState("Ab12345678910-");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [pwdVal, setPwdVal] = useState("");
   const [pwdError, setPwdError] = useState();
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);

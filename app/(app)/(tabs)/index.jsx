@@ -16,7 +16,7 @@ export default function Index() {
 
   return (
     <Box {...safeAreaProps}>
-      <Heading size="xl">{"Welcome " + user.name.first}</Heading>
+      <Heading size="xl">{"Hello " + user.name?.first || ""}</Heading>
     </Box>
   );
 }

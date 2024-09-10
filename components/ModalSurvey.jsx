@@ -76,7 +76,10 @@ function Section({ children }) {
           </Button>
         </HStack>
         <Box w="100%">
-          <Progress size="xs" value={45} />
+          <Progress
+            size="xs"
+            value={((sectionIndex + 1) * 100) / surveyData.length}
+          />
         </Box>
       </Modal.Header>
 
@@ -303,10 +306,11 @@ export default function ModalSurvey({
   setShowSurveyModal,
   setSkinAnalyses,
   setIsClosed,
+  setRestartQuiz,
+  restartQuiz,
 }) {
   console.log("ModalSurvey");
   const [userAnswer, setUserAnswer] = useState(new Map());
-
   const [surveyData, setSurveyData] = useState(undefined);
 
   useEffect(() => {
@@ -320,6 +324,15 @@ export default function ModalSurvey({
         console.log("Error", error);
       });
   }, []);
+
+  useEffect(() => {
+    console.log("restart quiz", restartQuiz);
+    if (restartQuiz) {
+      setRestartQuiz(false);
+      setUserAnswer(new Map());
+      setShowSurveyModal(true);
+    }
+  }, [restartQuiz]);
 
   return (
     <FullScreenModal

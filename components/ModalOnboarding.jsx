@@ -41,7 +41,7 @@ function ProfileModal() {
 
   const formatDate = (date) => {
     if (date) {
-      return dateFormat(date, "paddedShortDate");
+      return dateFormat(date, "dd/mm/yyyy");
     }
   };
   const onDateChange = (event, selectedDate) => {
@@ -175,10 +175,7 @@ export default function ModalOrboarding({
 }) {
   console.log("ModalOrboarding");
 
-  const [profileData, setProfileData] = useState({
-    name: "Bruna",
-    birthDate: new Date(1990, 6, 19),
-  });
+  const [profileData, setProfileData] = useState({});
 
   return (
     <FullScreenModal

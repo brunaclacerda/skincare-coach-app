@@ -20,8 +20,16 @@ import { useState, useEffect, createContext, useContext } from "react";
 const AnalysesModalContext = createContext();
 
 function Footer() {
-  const { isDone, setShowAnalysesModal, setIndex, index, setIsClosed } =
-    useContext(AnalysesModalContext);
+  const {
+    isDone,
+    setShowAnalysesModal,
+    setIndex,
+    index,
+    setIsClosed,
+    summary,
+    setRestartQuiz,
+    setShowRoutineModal,
+  } = useContext(AnalysesModalContext);
 
   const closeOnPress = () => {
     setShowAnalysesModal(false);
@@ -38,23 +46,46 @@ function Footer() {
 
   return (
     <Center flex={1}>
-      <Button.Group space="30px">
-        {index > 0 && (
-          <Button minW="80px" onPress={backOnPress}>
-            Back
+      {!summary.showSummary && (
+        <Button.Group space="30px">
+          {index > 0 && (
+            <Button minW="80px" onPress={backOnPress}>
+              Back
+            </Button>
+          )}
+          {!isDone && (
+            <Button minW="80px" onPress={nextOnPress}>
+              Next
+            </Button>
+          )}
+          {isDone && (
+            <Button minW="80px" onPress={closeOnPress}>
+              Close
+            </Button>
+          )}
+        </Button.Group>
+      )}
+      {summary.showSummary && (
+        <Button.Group space="30px">
+          <Button
+            minW="80px"
+            onPress={() => {
+              setRestartQuiz(true);
+            }}
+          >
+            Restart quiz
           </Button>
-        )}
-        {!isDone && (
-          <Button minW="80px" onPress={nextOnPress}>
+          <Button
+            minW="80px"
+            onPress={() => {
+              setShowRoutineModal(true);
+              setShowAnalysesModal(false);
+            }}
+          >
             Next
           </Button>
-        )}
-        {isDone && (
-          <Button minW="80px" onPress={closeOnPress}>
-            Close
-          </Button>
-        )}
-      </Button.Group>
+        </Button.Group>
+      )}
     </Center>
   );
 }
@@ -64,20 +95,35 @@ export default function ModalAnalyses({
   setShowAnalysesModal,
   skinAnalyses,
   setIsClosed,
+  setRestartQuiz,
+  restartQuiz,
+  setShowRoutineModal,
 }) {
   console.log("ModalAnalyses");
   const [pageData, setPageData] = useState({});
   const [index, setIndex] = useState(0);
   const [isDone, setIsDone] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   useEffect(() => {
-    console.log("UseEffect skin ", index, skinAnalyses.length);
-    if (showAnalysesModal) {
+    console.log("UseEffect skin ", index, skinAnalyses);
+    if (showAnalysesModal && skinAnalyses) {
       setIsDone(index == skinAnalyses.length - 1 ? true : false);
       if (index < skinAnalyses.length) return setPageData(skinAnalyses[index]);
-      setIsDone(true);
     }
   }, [index, showAnalysesModal]);
+
+  useEffect(() => {
+    if (isDone) setShowSummary(true);
+  }, [isDone]);
+
+  useEffect(() => {
+    if (restartQuiz) {
+      setShowSummary(false);
+      setIndex(0);
+      setShowAnalysesModal(false);
+    }
+  }, [restartQuiz]);
 
   return (
     <FullScreenModal
@@ -95,28 +141,45 @@ export default function ModalAnalyses({
             setIndex,
             index,
             setIsClosed,
+            summary: { showSummary, setShowSummary },
+            setRestartQuiz,
+            setShowRoutineModal,
           }}
         >
           <Modal.Header borderBottomWidth="0" safeArea>
-            <HStack>
-              <Heading w="85%" md="20px" mb="20px" margin="8px">
-                {pageData.analysis}
-              </Heading>
-              <Button
-                variant="unstyled"
-                onPress={() => {
-                  setIsClosed(true);
-                }}
-              >
-                <Text fontSize="2xs">Skip</Text>
-              </Button>
-            </HStack>
-            <Box w="100%">
-              <Progress
-                size="xs"
-                value={((index + 1) * 100) / skinAnalyses.length}
-              />
-            </Box>
+            {!showSummary && (
+              <>
+                <HStack>
+                  <Heading w="85%" md="20px" mb="20px" margin="8px">
+                    {pageData?.analysis}
+                  </Heading>
+                  <Button
+                    variant="unstyled"
+                    onPress={() => {
+                      setIsClosed(true);
+                    }}
+                  >
+                    <Text fontSize="2xs">Skip</Text>
+                  </Button>
+                </HStack>
+                <Box w="100%">
+                  <Progress
+                    size="xs"
+                    value={((index + 1) * 100) / skinAnalyses.length}
+                  />
+                </Box>
+              </>
+            )}
+
+            {showSummary && (
+              <>
+                <HStack>
+                  <Heading w="85%" p="10px">
+                    Your Skin Analysis
+                  </Heading>
+                </HStack>
+              </>
+            )}
           </Modal.Header>
 
           <Modal.Body flex="1" w="100%">
@@ -129,42 +192,58 @@ export default function ModalAnalyses({
                   display="flex"
                   alignItems="center"
                 >
-                  <Heading textAlign="center" size="md">
-                    {"You have " + pageData.result}
-                  </Heading>
-                  <Center>
-                    <Image
-                      source={{
-                        uri: "https://wallpaperaccess.com/full/317501.jpg",
-                      }}
-                      alt=""
-                      size="xl"
-                    />
-                  </Center>
-                  {/* <Box justifyContent="center" boxSize="100%">
-                    <TextArea
-                      isDisabled
-                      _disabled={{
-                        _font: {
-                          fontStyle: "normal", // Change font style to normal
-                          fontWeight: "normal", // Optional: You can also set font weight to normal
-                        },
-                      }}
-                      style={{ fontStyle: "normal" }}
-                      textAlign="center"
-                      flexDirection="column"
-                      display="flex"
-                      flex={1}
-                      h={350}
-                    >
-                      {pageData.text}
-                    </TextArea> */}
-                  <Container boxSize="100%">
-                    <Text alignContent="center" textAlign="center" h={350}>
-                      {pageData.text}
-                    </Text>
-                  </Container>
-                  {/* </Box> */}
+                  {!showSummary && (
+                    <>
+                      <Heading textAlign="center" size="md">
+                        {"You have " + pageData?.result}
+                      </Heading>
+                      <Center>
+                        <Image
+                          source={{
+                            uri: "https://wallpaperaccess.com/full/317501.jpg",
+                          }}
+                          alt=""
+                          size="xl"
+                        />
+                      </Center>
+                      <Container boxSize="100%">
+                        <Text alignContent="center" textAlign="center" h={350}>
+                          {pageData?.text}
+                        </Text>
+                      </Container>
+                    </>
+                  )}
+                  {showSummary && (
+                    <VStack space={7} boxSize="100%">
+                      {skinAnalyses.map((skin) => {
+                        console.log(skin);
+                        return (
+                          <HStack maxHeight={80}>
+                            <Image
+                              p={2}
+                              source={{
+                                uri: "https://wallpaperaccess.com/full/317501.jpg",
+                              }}
+                              alt=""
+                              size="sm"
+                            />
+                            <Container pl={3} space={1}>
+                              <Heading textAlign="left" fontSize="sm">
+                                {skin.analysis}
+                              </Heading>
+                              <Text
+                                textAlign="left"
+                                maxHeight={55}
+                                fontSize="xs"
+                              >
+                                {skin.text}{" "}
+                              </Text>
+                            </Container>
+                          </HStack>
+                        );
+                      })}
+                    </VStack>
+                  )}
                 </VStack>
               </Box>
             </ScrollView>
