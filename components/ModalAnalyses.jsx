@@ -19,6 +19,28 @@ import { useState, useEffect, createContext, useContext } from "react";
 
 const AnalysesModalContext = createContext();
 
+const RESULT_TEXT = {
+  oily: {
+    title: "You have oily skin",
+    text: "",
+  },
+  dry: {
+    title: "You have dry skin",
+    text: "",
+  },
+  sensitivity: {
+    title: "You have sensitive skin",
+    text: "",
+  },
+  elasticity: {
+    title: "You have elastic skin",
+    text: "",
+  },
+  acne: {
+    title: "You have acne-prone skin",
+    text: "",
+  },
+};
 function Footer() {
   const {
     isDone,
@@ -173,18 +195,21 @@ export default function ModalAnalyses({
 
             {showSummary && (
               <>
-                <HStack>
-                  <Heading w="85%" p="10px">
+                <VStack alignItems="left" safeArea>
+                  <Heading size="md" p="10px">
                     Your Skin Analysis
                   </Heading>
-                </HStack>
+                  <Heading size="xs">
+                    Below are your skins biggest concerns
+                  </Heading>
+                </VStack>
               </>
             )}
           </Modal.Header>
 
           <Modal.Body flex="1" w="100%">
             <ScrollView>
-              <Box pb="5" pt="7">
+              <Box pb="5" pt="1">
                 <VStack
                   space={3}
                   w="100%"
@@ -195,7 +220,7 @@ export default function ModalAnalyses({
                   {!showSummary && (
                     <>
                       <Heading textAlign="center" size="md">
-                        {"You have " + pageData?.result}
+                        {RESULT_TEXT[pageData?.result]?.title}
                       </Heading>
                       <Center>
                         <Image

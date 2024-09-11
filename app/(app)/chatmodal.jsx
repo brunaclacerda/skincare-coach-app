@@ -15,6 +15,7 @@ import {
   Pressable,
   Spacer,
   Spinner,
+  CloseIcon,
 } from "native-base";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "expo-router";
@@ -28,7 +29,11 @@ import { useChatContext } from "../../components/ChatContext";
 export default function ChatModal() {
   const WELCOME_MSG = [
     {
-      content: "Hi! I’m here to help!?",
+      content: "Hi!",
+      role: "assistant",
+    },
+    {
+      content: "How can I help you?",
       role: "assistant",
     },
   ];
@@ -118,11 +123,11 @@ export default function ChatModal() {
         p={2}
       >
         <Center>
-          <HStack>
+          <HStack alignItems="center">
             <Heading w="85%">Chatbot</Heading>
             <Button variant="unstyled">
               <Link href="../chatbot">
-                <Text fontSize="2xs">Close</Text>
+                <CloseIcon size="lg" />
               </Link>
             </Button>
           </HStack>
@@ -130,7 +135,6 @@ export default function ChatModal() {
         <Divider />
         <ScrollView ref={scrollViewRef}>
           <Box
-            alignItems="center"
             display="flex"
             flexDirection="column"
             flex="1"
@@ -142,8 +146,7 @@ export default function ChatModal() {
               <Spacer flex={1}></Spacer>
               {messages.map((message) => {
                 return (
-                  <Box rounded="xl" {...styles[message.role]} p="3">
-                    {/* <Text>{message.content}</Text> */}
+                  <Box rounded="xl" {...styles[message.role]} p={1} pl={2}>
                     <Markdown>{message.content}</Markdown>
                   </Box>
                 );
@@ -201,6 +204,7 @@ function MessageButton({ setQuery, isLoading, setIsLoading }) {
       <Pressable
         justifyContent="center"
         onPress={() => {
+          if (!input) return;
           setIsLoading(true);
           setQuery(input);
           setInput("");
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
     bg: "gray.300",
   },
   user: {
-    marginRight: "5",
+    marginRight: "8",
     bg: "gray.100",
   },
 });

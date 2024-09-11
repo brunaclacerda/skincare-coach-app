@@ -1,19 +1,16 @@
 import {
   Text,
   Modal,
-  Box,
   Button,
   ScrollView,
   Heading,
   HStack,
-  Progress,
   Center,
   Image,
   VStack,
-  TextArea,
   Container,
-  Pressable,
   Divider,
+  Box,
 } from "native-base";
 
 import {
@@ -28,7 +25,7 @@ import {
 import { TabView, SceneMap } from "react-native-tab-view";
 
 import FullScreenModal from "./FullScreenModal";
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect } from "react";
 
 const getRoutine = (skinType) => {
   switch (skinType) {
@@ -110,11 +107,19 @@ const getRoutine = (skinType) => {
 };
 const template = (routine = {}, prop = "") => (
   <ScrollView>
-    <VStack pt={4} space={8} flex={1} alignItems="center">
+    <VStack
+      pt={4}
+      space={4}
+      flex={1}
+      alignItems="center"
+      w="100%"
+      alignContent="center"
+    >
       {routine[prop].map((value, index) => {
         return (
-          <VStack>
-            <Heading size="sm">Step {index + 1} </Heading>
+          <VStack w="90%">
+            <Heading size="xs">Step {index + 1} </Heading>
+            <Divider orientation="horizontal" bg="black" mt={1} mb={2} />
             <HStack space={2}>
               <Image
                 p={2}
@@ -140,6 +145,7 @@ const template = (routine = {}, prop = "") => (
 );
 
 const initialLayout = {
+  // width: Dimensions.get("window").width,
   width: Dimensions.get("window").width,
 };
 
@@ -197,8 +203,8 @@ export default function ModalRoutine({
             ),
           });
 
-          const color = index === i ? "#e5e5e5" : "#1f2937";
-          const borderColor = index === i ? "#1f2937" : "#e5e5e5";
+          const color = index === i ? "#000000" : "#000000";
+          const borderColor = index === i ? "#06b6d4" : "#e5e5e5";
           return (
             <TouchableOpacity
               style={{
@@ -207,7 +213,7 @@ export default function ModalRoutine({
               }}
               onPress={() => setIndex(i)}
             >
-              <Animated.Text style={{ opacity, color }}>
+              <Animated.Text style={{ opacity, color, fontWeight: "bold" }}>
                 {route.title}
               </Animated.Text>
             </TouchableOpacity>
@@ -223,9 +229,9 @@ export default function ModalRoutine({
         setShowModal: setShowRoutineModal,
       }}
     >
-      <Center pt={8} safeArea>
-        <Heading>Your Skincare Routine</Heading>
-      </Center>
+      <Box pt={8} safeArea>
+        <Heading just>Your Skincare Routine</Heading>
+      </Box>
 
       <TabView
         navigationState={{
@@ -267,78 +273,6 @@ export default function ModalRoutine({
     </FullScreenModal>
   );
 }
-
-// }
-// function Footer() {
-//   const {
-//     isDone,
-//     setShowAnalysesModal,
-//     setIndex,
-//     index,
-//     setIsClosed,
-//     summary,
-//     setRestartQuiz,
-//   } = useContext(AnalysesModalContext);
-
-//   const closeOnPress = () => {
-//     setShowAnalysesModal(false);
-//     setIsClosed(true);
-//   };
-
-//   const nextOnPress = () => {
-//     setIndex(index + 1);
-//   };
-
-//   const backOnPress = () => {
-//     setIndex(index - 1);
-//   };
-
-//   return (
-//     <Center flex={1}>
-//       {!summary.showSummary && (
-//         <Button.Group space="30px">
-//           {index > 0 && (
-//             <Button minW="80px" onPress={backOnPress}>
-//               Back
-//             </Button>
-//           )}
-//           {!isDone && (
-//             <Button minW="80px" onPress={nextOnPress}>
-//               Next
-//             </Button>
-//           )}
-//           {isDone && (
-//             <Button minW="80px" onPress={closeOnPress}>
-//               Close
-//             </Button>
-//           )}
-//         </Button.Group>
-//       )}
-//       {summary.showSummary && (
-//         <Button.Group space="30px">
-//           <Button
-//             minW="80px"
-//             onPress={() => {
-//               console.log("retart quiz");
-//               setRestartQuiz(true);
-//               setShowAnalysesModal(false);
-//             }}
-//           >
-//             Restart quiz
-//           </Button>
-//           <Button
-//             minW="80px"
-//             onPress={() => {
-//               console.log("Show routine builder");
-//             }}
-//           >
-//             Next
-//           </Button>
-//         </Button.Group>
-//       )}
-//     </Center>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {
