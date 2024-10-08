@@ -29,6 +29,7 @@ web-build/
 /ios
 app-example/
 scripts/reset-project.js
+eas.json
 
 # Native
 *.orig.*
@@ -52,7 +53,7 @@ yarn-error.*
 
 # local env files
 .env*.local
-
+.env
 # typescript
 *.tsbuildinfo
 
@@ -61,3 +62,4 @@ expo-env.d.ts
 
 # .vscode
 .vscode
+eas.json
